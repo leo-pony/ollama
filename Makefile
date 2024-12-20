@@ -34,6 +34,9 @@ ifneq ($(HIP_COMPILER),)
 endif
 endif
 
+ifeq ($(OLLAMA_SKIP_CANN_GENERATE),)
+	RUNNER_TARGETS += cann
+endif
 
 all: runners exe
 

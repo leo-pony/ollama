@@ -10,6 +10,7 @@ ifeq ($(OS),windows)
 endif
 
 # Check if CANN_INSTALL_DIR is unset or empty, and ASCEND_TOOLKIT_HOME is defined
+$(info CANN: CANN_INSTALL_DIR=$(CANN_INSTALL_DIR) ASCEND_TOOLKIT_HOME=$(ASCEND_TOOLKIT_HOME) PATH=$(PATH))
 ifeq ($(strip $(CANN_INSTALL_DIR)),)
     ifneq ($(strip $(ASCEND_TOOLKIT_HOME)),)
         CANN_INSTALL_DIR := $(ASCEND_TOOLKIT_HOME)
@@ -81,10 +82,10 @@ include make/gpu.make
 # $(GPU_RUNNER_NAME): $(CANN_BUILD_DIR)/$(SHARED_PREFIX)ascendc_kernels.$(SHARED_EXT) WAIT
 # First detect Ascend SOC type
 SOC_VERSION :=
-SOC_TYPE :=
-detect_ascend_soc_type = $(shell npu-smi info | awk -F' ' 'NF > 0 && NR==7 {print $$3}')
-$(info CANN detect_ascend_soc_type auto-detected is $(detect_ascend_soc_type))
+SOC_TYPE := Ascend910B3
 ifeq ($(SOC_TYPE),)
+	detect_ascend_soc_type = $(shell npu-smi info | awk -F' ' 'NF > 0 && NR==7 {print $$3}')
+	$(info CANN detect_ascend_soc_type auto-detected is $(detect_ascend_soc_type))
     SOC_VERSION := $(call detect_ascend_soc_type)
     ifeq ($(SOC_VERSION),)
         $(error Auto-detect ascend soc type failed, please specify manually or check ascend device working normally.)
@@ -100,7 +101,7 @@ SOC_VERSION := $(shell echo $(SOC_TYPE) | tr '[:upper:]' '[:lower:]')
 SOC_TYPE_MAJOR_SN := $(shell echo $(SOC_VERSION) | grep -o [0-9][0-9][0-9][a-zA-Z]*)
 SOC_TYPE_COMPILE_OPTION := ASCEND_$(SOC_TYPE_MAJOR_SN)
 SOC_TYPE_COMPILE_OPTION := $(shell echo $(SOC_TYPE_COMPILE_OPTION) | tr '[:lower:]' '[:upper:]')
-CANN_KERNEL_CMAKE_FLAGS +=  -DSOC_TYPE=$(SOC_TYPE) -DSOC_VERSION=$(SOC_VERSION) -DSOC_TYPE_COMPILE_OPTION=$(SOC_TYPE_COMPILE_OPTION)
+CANN_KERNEL_CMAKE_FLAGS += -DSOC_TYPE=$(SOC_TYPE) -DSOC_VERSION=$(SOC_VERSION) -DSOC_TYPE_COMPILE_OPTION=$(SOC_TYPE_COMPILE_OPTION)
 # Second build cann llama.cpp custom kernel
 $(CANN_BUILD_DIR)/$(SHARED_PREFIX)ascendc_kernels.$(SHARED_EXT):
 	@rm -rf $(CANN_KERNEL_BUILD_DIR)

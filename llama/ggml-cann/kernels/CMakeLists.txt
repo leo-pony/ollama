@@ -1,8 +1,7 @@
 cmake_minimum_required(VERSION 3.14) # for add_link_options and implicit target directories.
-# 设置政策 CMP0057
+# let cmake could find C++ compiler successfully 
 cmake_policy(SET CMP0057 NEW)
 
-# 其他 CMake 配置
 project("llama.cann.kernel")
 
 file(GLOB SRC_FILES

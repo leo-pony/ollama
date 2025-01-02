@@ -3,6 +3,7 @@
 # Note: at present we only support a single CANN version
 
 include make/common-defs.make
+include make/cann-defs.make
 
 ifeq ($(OS),windows)
 	@echo "CANN does not currently support windows."

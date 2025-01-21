@@ -396,29 +396,29 @@ install_ascend_driver_yum() {
     $SUDO sh Ascend-hdk-$1-npu-driver_$(echo "$ASCEND_DRIVER_VERSION" | tr '[:upper:]' '[:lower:]')_linux-$(uname -m).run --full --install-for-all
     rm -rf ./Ascend-hdk-$1-npu-driver_$(echo "$ASCEND_DRIVER_VERSION" | tr '[:upper:]' '[:lower:]')_linux-$(uname -m).run
 
-    wget "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/Ascend HDK/Ascend HDK $ASCEND_DRIVER_VERSION/Ascend-hdk-$1-npu-firmware_$ASCEND_FIRMWARE_VERSION.220.run"
-    sudo sh Ascend-hdk-$1-npu-firmware_$ASCEND_FIRMWARE_VERSION.220.run --full
-    rm -rf ./Ascend-hdk-$1-npu-firmware_$ASCEND_FIRMWARE_VERSION.220.run
+    wget "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/Ascend HDK/Ascend HDK $ASCEND_DRIVER_VERSION/Ascend-hdk-$1-npu-firmware_$ASCEND_FIRMWARE_VERSION.231.run"
+    sudo sh Ascend-hdk-$1-npu-firmware_$ASCEND_FIRMWARE_VERSION.231.run --full
+    rm -rf ./Ascend-hdk-$1-npu-firmware_$ASCEND_FIRMWARE_VERSION.231.run
 }
 
 install_ascend_driver_apt() {
     status 'Installing ASCNED driver version: $ASCEND_DRIVER_VERSION ,firmware version: $ASCEND_FIRMWARE_VERSION...'
-    $SUDO_E apt-get -y install gcc g++ make cmake zlib1g zlib1g-dev openssl libsqlite3-dev libssl-dev libffi-dev unzip pciutils net-tools libblas-dev gfortran libblas3 python3-dev
-    $SUDO groupadd -g HwHiAiUser
-    $SUDO useradd -g HwHiAiUser -d /home/HwHiAiUser -m HwHiAiUser -s /bin/bash
-    $SUDO usermod -aG HwHiAiUser $USER
+    apt-get -y install gcc g++ make cmake zlib1g zlib1g-dev openssl libsqlite3-dev libssl-dev libffi-dev unzip pciutils net-tools libblas-dev gfortran libblas3 python3-dev
+    groupadd -g HwHiAiUser
+    useradd -g HwHiAiUser -d /home/HwHiAiUser -m HwHiAiUser -s /bin/bash
+    usermod -aG HwHiAiUser $USER
 
     # driver version,mabey get from it
     # npu-smi info
     # +------------------------------------------------------------------------------------------------+
     # | npu-smi 24.1.rc1.b060            Version: 24.1.rc1.b060                                        |
     wget "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/Ascend HDK/Ascend HDK $ASCEND_DRIVER_VERSION/Ascend-hdk-$1-npu-driver_$(echo "$ASCEND_DRIVER_VERSION" | tr '[:upper:]' '[:lower:]')_linux-$(uname -m).run"
-    $SUDO sh Ascend-hdk-$1-npu-driver_$(echo "$ASCEND_DRIVER_VERSION" | tr '[:upper:]' '[:lower:]')_linux-$(uname -m).run --full --install-for-all
+    sh Ascend-hdk-$1-npu-driver_$(echo "$ASCEND_DRIVER_VERSION" | tr '[:upper:]' '[:lower:]')_linux-$(uname -m).run --full --install-for-all
     rm -rf ./Ascend-hdk-$1-npu-driver_$(echo "$ASCEND_DRIVER_VERSION" | tr '[:upper:]' '[:lower:]')_linux-$(uname -m).run
 
-    wget "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/Ascend HDK/Ascend HDK $ASCEND_DRIVER_VERSION/Ascend-hdk-$1-npu-firmware_$ASCEND_FIRMWARE_VERSION.220.run"
-    sudo sh Ascend-hdk-$1-npu-firmware_$ASCEND_FIRMWARE_VERSION.220.run --full
-    rm -rf ./Ascend-hdk-$1-npu-firmware_$ASCEND_FIRMWARE_VERSION.220.run
+    wget "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/Ascend HDK/Ascend HDK $ASCEND_DRIVER_VERSION/Ascend-hdk-$1-npu-firmware_$ASCEND_FIRMWARE_VERSION.231.run"
+    sudo sh Ascend-hdk-$1-npu-firmware_$ASCEND_FIRMWARE_VERSION.231.run --full
+    rm -rf ./Ascend-hdk-$1-npu-firmware_$ASCEND_FIRMWARE_VERSION.231.run
 }
 
 install_ascend_cann() {
@@ -441,7 +441,7 @@ if check_gpu lspci ascend || check_gpu lshw ascend; then
         ASCEND_DRIVER_VERSION="24.1.RC2"
     fi
     if [ -z "$ASCEND_FIRMWARE_VERSION" ]; then
-        ASCEND_FIRMWARE_VERSION="7.3.0.2"
+        ASCEND_FIRMWARE_VERSION="7.3.0.1"
     fi
     if [ -z "$ASCEND_CANN_VERSION" ]; then
         ASCEND_CANN_VERSION="8.0.RC2"
